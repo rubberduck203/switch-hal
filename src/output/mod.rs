@@ -49,3 +49,40 @@ impl<T: OutputPin + ToggleableOutputPin> ToggleableOutputSwitch for ActiveHighOu
         self.pin.toggle()
     }
 }
+
+pub struct ActiveLowOutputSwitch<T>
+where
+    T: OutputPin,
+{
+    pin: T,
+}
+
+impl<T: OutputPin> ActiveLowOutputSwitch<T> {
+    pub fn new(pin: T) -> Self {
+        ActiveLowOutputSwitch { pin: pin }
+    }
+
+    pub fn into_pin(self) -> T {
+        self.pin
+    }
+}
+
+impl<T: OutputPin> OutputSwitch for ActiveLowOutputSwitch<T> {
+    type Error = <T as OutputPin>::Error;
+
+    fn on(&mut self) -> Result<(), Self::Error> {
+        self.pin.set_low()
+    }
+
+    fn off(&mut self) -> Result<(), Self::Error> {
+        self.pin.set_high()
+    }
+}
+
+impl<T: OutputPin + ToggleableOutputPin> ToggleableOutputSwitch for ActiveLowOutputSwitch<T> {
+    type Error = <T as ToggleableOutputPin>::Error;
+
+    fn toggle(&mut self) -> Result<(), Self::Error> {
+        self.pin.toggle()
+    }
+}
