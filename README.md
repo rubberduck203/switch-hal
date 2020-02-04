@@ -1,5 +1,10 @@
 # switch-hal
 
+![Rust](https://github.com/rubberduck203/switch-hal/workflows/Rust/badge.svg)
+[![crates.io](https://img.shields.io/crates/d/switch-hal.svg)](https://crates.io/crates/switch-hal)
+[![crates.io](https://img.shields.io/crates/v/switch-hal.svg)](https://crates.io/crates/switch-hal)
+[![docs.rs](https://docs.rs/switch-hal/badge.svg)](https://docs.rs/switch-hal/badge.svg)
+
 Switch-HAL is a `no_std` embedded Rust library for working with buttons, switches, LEDs, and transistors.
 Basically, anything that acts like a switch, whether an input or output.
 
