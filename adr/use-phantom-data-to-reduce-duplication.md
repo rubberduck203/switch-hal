@@ -2,7 +2,7 @@
 
 ## Status
 
-Pending
+Pending verification that the generic `PhantomData` version is indeed zero cost.
 
 ## Context
 
@@ -32,7 +32,7 @@ However, this means that construction of an `OutputSwitch` becomes more complica
 Before the change:
 
 ```rust
-let led = ActiveHighOutputPin::new(
+let led = ActiveHighOutputSwitch::new(
     gpioe
     .pe9
     .into_push_pull_output(&mut gpioe.moder, &mut gpioe.otyper)
@@ -42,8 +42,7 @@ let led = ActiveHighOutputPin::new(
 After the change:
 
 ```rust
-type LedPin = stm32f3xx_hal::gpio::gpioe::PEx<Output<PushPull>>;
-let led = ActiveHighOutputPin::<LedPin, ActiveHigh>::new(
+let led = output::Switch::<_, ActiveHigh>::new(
     gpioe
     .pe9
     .into_push_pull_output(&mut gpioe.moder, &mut gpioe.otyper)
@@ -53,4 +52,5 @@ let led = ActiveHighOutputPin::<LedPin, ActiveHigh>::new(
 ## Consequences
 
 By rejecting this proposal, we are adding more (and duplicated!) code to the library, increasing maintenance burden.
-By accepting this proposal, we reduce the maintenance burden, but are making the library more difficult to consume.
+
+By accepting this proposal, we reduce the maintenance burden, but are making the library more difficult to consume by a small bit.
