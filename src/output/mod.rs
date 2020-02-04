@@ -13,16 +13,25 @@ pub trait ToggleableOutputSwitch {
     fn toggle(&mut self) -> Result<(), Self::Error>;
 }
 
-pub struct ActiveHighOutputSwitch<T>
+use core::marker::PhantomData;
+
+pub struct ActiveHigh;
+pub struct ActiveLow;
+
+pub struct Switch<T, Activeness>
 where
     T: OutputPin,
 {
     pin: T,
+    active: PhantomData<Activeness>,
 }
 
-impl<T: OutputPin> ActiveHighOutputSwitch<T> {
+impl<T: OutputPin, Activeness> Switch<T, Activeness> {
     pub fn new(pin: T) -> Self {
-        ActiveHighOutputSwitch { pin: pin }
+        Switch {
+            pin: pin,
+            active: PhantomData::<Activeness>,
+        }
     }
 
     pub fn into_pin(self) -> T {
@@ -30,7 +39,7 @@ impl<T: OutputPin> ActiveHighOutputSwitch<T> {
     }
 }
 
-impl<T: OutputPin> OutputSwitch for ActiveHighOutputSwitch<T> {
+impl<T: OutputPin> OutputSwitch for Switch<T, ActiveHigh> {
     type Error = <T as OutputPin>::Error;
 
     fn on(&mut self) -> Result<(), Self::Error> {
@@ -42,32 +51,7 @@ impl<T: OutputPin> OutputSwitch for ActiveHighOutputSwitch<T> {
     }
 }
 
-impl<T: OutputPin + ToggleableOutputPin> ToggleableOutputSwitch for ActiveHighOutputSwitch<T> {
-    type Error = <T as ToggleableOutputPin>::Error;
-
-    fn toggle(&mut self) -> Result<(), Self::Error> {
-        self.pin.toggle()
-    }
-}
-
-pub struct ActiveLowOutputSwitch<T>
-where
-    T: OutputPin,
-{
-    pin: T,
-}
-
-impl<T: OutputPin> ActiveLowOutputSwitch<T> {
-    pub fn new(pin: T) -> Self {
-        ActiveLowOutputSwitch { pin: pin }
-    }
-
-    pub fn into_pin(self) -> T {
-        self.pin
-    }
-}
-
-impl<T: OutputPin> OutputSwitch for ActiveLowOutputSwitch<T> {
+impl<T: OutputPin> OutputSwitch for Switch<T, ActiveLow> {
     type Error = <T as OutputPin>::Error;
 
     fn on(&mut self) -> Result<(), Self::Error> {
@@ -79,7 +63,7 @@ impl<T: OutputPin> OutputSwitch for ActiveLowOutputSwitch<T> {
     }
 }
 
-impl<T: OutputPin + ToggleableOutputPin> ToggleableOutputSwitch for ActiveLowOutputSwitch<T> {
+impl<T: OutputPin + ToggleableOutputPin, Activeness> ToggleableOutputSwitch for Switch<T, Activeness> {
     type Error = <T as ToggleableOutputPin>::Error;
 
     fn toggle(&mut self) -> Result<(), Self::Error> {
