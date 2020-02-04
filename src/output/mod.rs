@@ -56,7 +56,9 @@ pub trait ToggleableOutputSwitch {
 
 use core::marker::PhantomData;
 
+/// Zero sized struct for signaling to [Switch](Switch) that it is active high
 pub struct ActiveHigh;
+/// Zero sized struct for signaling to [Switch](Switch) that it is active low
 pub struct ActiveLow;
 
 /// Concrete implementation of [OutputSwitch](OutputSwitch)
@@ -72,7 +74,27 @@ impl<T: OutputPin, Activeness> Switch<T, Activeness> {
     /// Constructs a new [Switch](Switch) from a concrete implementation of an [OutputPin](embedded_hal::digital::v2::OutputPin).
     /// 
     /// # Examples
-    /// 
+    ///
+    /// Active High
+    ///
+    /// ```
+    /// # use embedded_hal_mock::pin::Mock;
+    /// use switch_hal::output::{OutputSwitch, Switch, ActiveHigh};
+    /// # let pin = Mock::new(&[]);
+    /// let mut led = Switch::<_, ActiveHigh>::new(pin);
+    /// ```
+    ///
+    /// ActiveLow
+    ///
+    /// ```
+    /// # use embedded_hal_mock::pin::Mock;
+    /// use switch_hal::output::{OutputSwitch, Switch, ActiveLow};
+    /// # let pin = Mock::new(&[]);
+    /// let mut led = Switch::<_, ActiveLow>::new(pin);
+    /// ```
+    ///
+    /// stm32f3xx-hal
+    ///
     /// ```ignore
     /// // Example for the stm32f303
     /// use stm32f3xx_hal::gpio::gpioe;
@@ -84,7 +106,7 @@ impl<T: OutputPin, Activeness> Switch<T, Activeness> {
     /// let device_periphs = stm32::Peripherals::take().unwrap();
     /// let gpioe = device_periphs.GPIOE.split(&mut reset_control_clock.ahb);
     /// 
-    /// let led = ld3: Switch::<_, ActiveHigh>::new(
+    /// let led = Switch::<_, ActiveHigh>::new(
     ///     gpioe
     ///     .pe9
     ///     .into_push_pull_output(&mut gpioe.moder, &mut gpioe.otyper)
