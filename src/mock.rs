@@ -22,6 +22,10 @@ impl Pin {
     pub fn new() -> Self {
         Pin { state: None }
     }
+
+    pub fn with_state(state: State) -> Self {
+        Pin { state: Some(state) }
+    }
 }
 
 type MockError = &'static str;
@@ -100,13 +104,13 @@ mod test {
 
             #[test]
             fn returns_true_when_state_is_high() {
-                let pin = Pin { state: Some(State::High) };
+                let pin = Pin::with_state(State::High);
                 assert_eq!(true, pin.is_high().unwrap());
             }
 
             #[test]
             fn returns_false_when_state_is_low() {
-                let pin = Pin { state: Some(State::Low) };
+                let pin = Pin::with_state(State::Low);
                 assert_eq!(false, pin.is_high().unwrap());
             }
         }
@@ -116,13 +120,13 @@ mod test {
 
             #[test]
             fn returns_false_when_state_is_high() {
-                let pin = Pin { state: Some(State::High) };
+                let pin = Pin::with_state(State::High);
                 assert_eq!(false, pin.is_low().unwrap());
             }
 
             #[test]
             fn returns_true_when_state_is_high() {
-                let pin = Pin { state: Some(State::Low) };
+                let pin = Pin::with_state(State::Low);
                 assert_eq!(true, pin.is_low().unwrap());
             }
         }
@@ -133,7 +137,7 @@ mod test {
 
         #[test]
         fn set_low() {
-            let mut pin = Pin { state: None };
+            let mut pin = Pin::new();
             pin.set_low().unwrap();
 
             assert_eq!(true, pin.is_low().unwrap());
@@ -141,7 +145,7 @@ mod test {
 
         #[test]
         fn set_high() {
-            let mut pin = Pin { state: None };
+            let mut pin = Pin::new();
             pin.set_high().unwrap();
 
             assert_eq!(true, pin.is_high().unwrap());
@@ -162,13 +166,13 @@ mod test {
 
             #[test]
             fn returns_false_when_state_is_high() {
-                let pin = Pin { state: Some(State::High) };
+                let pin = Pin::with_state(State::High);
                 assert_eq!(false, pin.is_set_low().unwrap());
             }
 
             #[test]
             fn returns_true_when_state_is_high() {
-                let pin = Pin { state: Some(State::Low) };
+                let pin = Pin::with_state(State::Low);
                 assert_eq!(true, pin.is_set_low().unwrap());
             }
         }
@@ -178,13 +182,13 @@ mod test {
 
             #[test]
             fn returns_true_when_state_is_high() {
-                let pin = Pin { state: Some(State::High) };
+                let pin = Pin::with_state(State::High);
                 assert_eq!(true, pin.is_set_high().unwrap());
             }
 
             #[test]
             fn returns_false_when_state_is_low() {
-                let pin = Pin { state: Some(State::Low) };
+                let pin = Pin::with_state(State::Low);
                 assert_eq!(false, pin.is_set_high().unwrap());
             }
         }
@@ -195,7 +199,7 @@ mod test {
 
             #[test]
             fn default_toggleable_impl() {
-                let mut pin = Pin { state: Some(State::Low) };
+                let mut pin = Pin::with_state(State::Low);
                 pin.toggle().unwrap();
                 assert_eq!(true, pin.is_set_high().unwrap());
             }
