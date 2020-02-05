@@ -36,6 +36,14 @@ The target audience for this library is:
 
 https://docs.rs/crate/switch-hal
 
+or build a local copy
+
+```sh
+cargo docs
+```
+
+and open `target/doc/switch_hal/index.html` in your browser.
+
 ## License
 
 Licensed under either of
