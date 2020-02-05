@@ -9,10 +9,9 @@ pub trait OutputSwitch {
     /// # Examples
     /// 
     /// ```
-    /// # use embedded_hal_mock::pin::{Mock, State, Transaction};
+    /// # use switch_hal::mock;
     /// use switch_hal::output::{OutputSwitch, Switch, ActiveHigh};
-    /// # let expectations = [Transaction::set(State::High)];
-    /// # let pin = Mock::new(&expectations);
+    /// # let pin = mock::Pin::new();
     /// let mut led = Switch::<_, ActiveHigh>::new(pin);
     /// led.on().ok();
     /// ```
@@ -23,10 +22,9 @@ pub trait OutputSwitch {
     /// # Examples
     /// 
     /// ```
-    /// # use embedded_hal_mock::pin::{Mock, State, Transaction};
+    /// # use switch_hal::mock;
     /// use switch_hal::output::{OutputSwitch, Switch, ActiveHigh};
-    /// # let expectations = [Transaction::set(State::Low)];
-    /// # let pin = Mock::new(&expectations);
+    /// # let pin = mock::Pin::new();
     /// let mut led = Switch::<_, ActiveHigh>::new(pin);
     /// led.off().ok();
     /// ```
@@ -44,10 +42,10 @@ pub trait ToggleableOutputSwitch {
     /// 
     /// # Examples
     /// 
-    /// ```ignore
-    /// # use embedded_hal_mock::pin::{Mock, State, Transaction};
-    /// use switch_hal::output::{OutputSwitch, ToggleableOutputSwitch, Switch, ActiveHigh};
-    /// # let pin = Mock::new(&[]);
+    /// ```
+    /// # use switch_hal::mock;
+    /// use switch_hal::output::{ToggleableOutputSwitch, OutputSwitch, Switch, ActiveHigh};
+    /// # let pin = mock::Pin::new();
     /// let mut led = Switch::<_, ActiveHigh>::new(pin);
     /// led.toggle().ok();
     /// ```
@@ -78,18 +76,18 @@ impl<T: OutputPin, Activeness> Switch<T, Activeness> {
     /// Active High
     ///
     /// ```
-    /// # use embedded_hal_mock::pin::Mock;
+    /// # use switch_hal::mock;
     /// use switch_hal::output::{OutputSwitch, Switch, ActiveHigh};
-    /// # let pin = Mock::new(&[]);
+    /// # let pin = mock::Pin::new();
     /// let mut led = Switch::<_, ActiveHigh>::new(pin);
     /// ```
     ///
     /// ActiveLow
     ///
     /// ```
-    /// # use embedded_hal_mock::pin::Mock;
+    /// # use switch_hal::mock;
     /// use switch_hal::output::{OutputSwitch, Switch, ActiveLow};
-    /// # let pin = Mock::new(&[]);
+    /// # let pin = mock::Pin::new();
     /// let mut led = Switch::<_, ActiveLow>::new(pin);
     /// ```
     ///
@@ -126,10 +124,9 @@ impl<T: OutputPin, Activeness> Switch<T, Activeness> {
     /// # Examples
     /// 
     /// ```
-    /// # use embedded_hal_mock::pin::{Mock, State, Transaction};
+    /// # use switch_hal::mock;
     /// use switch_hal::output::{OutputSwitch, Switch, ActiveHigh};
-    /// # let expectations = [Transaction::set(State::High)];
-    /// # let pin = Mock::new(&expectations);
+    /// # let pin = mock::Pin::new();
     /// let mut led = Switch::<_, ActiveHigh>::new(pin);
     /// led.on().ok();
     /// let mut pin = led.into_pin();
