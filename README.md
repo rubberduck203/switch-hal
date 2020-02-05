@@ -28,10 +28,6 @@ and from then on out, simply called `led.on()` or `led.off()`.
 Having an abstraction at the proper level reduces cognitive load.  
 Specifying whether a simple peripheral is active high or low in a single place in your application reduces the maintenace burden.
 
-The target audience for this library is:
-- Application developers
-- Board Support Package developers
-
 ## Documentation
 
 https://docs.rs/crate/switch-hal
