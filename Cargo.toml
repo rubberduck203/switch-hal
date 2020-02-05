@@ -9,6 +9,7 @@ documentation = "https://docs.rs/crate/switch-hal"
 categories = ["embedded", "hardware-support", "no-std"]
 keywords = ["embedded-hal", "embedded-hal-driver", "led", "button"]
 license = "MIT OR Apache-2.0"
+readme = "README.md"
 exclude = [
     ".vscode/*",
 ]
