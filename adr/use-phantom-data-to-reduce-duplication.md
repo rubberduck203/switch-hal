@@ -2,7 +2,7 @@
 
 ## Status
 
-Pending
+Accepted
 
 ## Context
 
@@ -32,7 +32,7 @@ However, this means that construction of an `OutputSwitch` becomes more complica
 Before the change:
 
 ```rust
-let led = ActiveHighOutputPin::new(
+let led = ActiveHighOutputSwitch::new(
     gpioe
     .pe9
     .into_push_pull_output(&mut gpioe.moder, &mut gpioe.otyper)
@@ -42,8 +42,7 @@ let led = ActiveHighOutputPin::new(
 After the change:
 
 ```rust
-type LedPin = stm32f3xx_hal::gpio::gpioe::PEx<Output<PushPull>>;
-let led = ActiveHighOutputPin::<LedPin, ActiveHigh>::new(
+let led = output::Switch::<_, ActiveHigh>::new(
     gpioe
     .pe9
     .into_push_pull_output(&mut gpioe.moder, &mut gpioe.otyper)
@@ -53,4 +52,33 @@ let led = ActiveHighOutputPin::<LedPin, ActiveHigh>::new(
 ## Consequences
 
 By rejecting this proposal, we are adding more (and duplicated!) code to the library, increasing maintenance burden.
-By accepting this proposal, we reduce the maintenance burden, but are making the library more difficult to consume.
+
+By accepting this proposal, we reduce the maintenance burden, but are making the library more difficult to consume by a little bit.
+
+This does indeed seem to be a zero cost abstraction.
+The examples in [stm32f3-discovery](https://github.com/rubberduck203/stm32f3-discovery) were compiled in release mode and compared.
+
+```sh
+cargo build --release --examples
+ls examples/ | sed s/.rs// | sed s,^,target/thumbv7em-none-eabihf/release/examples/, | xargs cargo size
+```
+
+### Old Version
+
+```txt
+   text	   data	    bss	    dec	    hex	filename
+   4784	      0	      4	   4788	   12b4	target/thumbv7em-none-eabihf/release/examples/blinky
+   4732	      0	      4	   4736	   1280	target/thumbv7em-none-eabihf/release/examples/button
+   4564	      0	      4	   4568	   11d8	target/thumbv7em-none-eabihf/release/examples/button_int
+   5460	      0	      4	   5464	   1558	target/thumbv7em-none-eabihf/release/examples/roulette
+```
+
+### New (PhantomData) Version
+
+```txt
+   text	   data	    bss	    dec	    hex	filename
+   4784	      0	      4	   4788	   12b4	target/thumbv7em-none-eabihf/release/examples/blinky
+   4732	      0	      4	   4736	   1280	target/thumbv7em-none-eabihf/release/examples/button
+   4564	      0	      4	   4568	   11d8	target/thumbv7em-none-eabihf/release/examples/button_int
+   5460	      0	      4	   5464	   1558	target/thumbv7em-none-eabihf/release/examples/roulette
+```
