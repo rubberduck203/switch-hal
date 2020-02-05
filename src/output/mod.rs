@@ -60,15 +60,15 @@ pub struct ActiveHigh;
 pub struct ActiveLow;
 
 /// Concrete implementation of [OutputSwitch](OutputSwitch)
-pub struct Switch<T, Activeness>
+pub struct Switch<T, ActiveLevel>
 where
     T: OutputPin,
 {
     pin: T,
-    active: PhantomData<Activeness>,
+    active: PhantomData<ActiveLevel>,
 }
 
-impl<T: OutputPin, Activeness> Switch<T, Activeness> {
+impl<T: OutputPin, ActiveLevel> Switch<T, ActiveLevel> {
     /// Constructs a new [Switch](Switch) from a concrete implementation of an [OutputPin](embedded_hal::digital::v2::OutputPin).
     /// 
     /// # Examples
@@ -113,7 +113,7 @@ impl<T: OutputPin, Activeness> Switch<T, Activeness> {
     pub fn new(pin: T) -> Self {
         Switch {
             pin: pin,
-            active: PhantomData::<Activeness>,
+            active: PhantomData::<ActiveLevel>,
         }
     }
 
@@ -161,7 +161,7 @@ impl<T: OutputPin> OutputSwitch for Switch<T, ActiveLow> {
     }
 }
 
-impl<T: OutputPin + ToggleableOutputPin, Activeness> ToggleableOutputSwitch for Switch<T, Activeness> {
+impl<T: OutputPin + ToggleableOutputPin, ActiveLevel> ToggleableOutputSwitch for Switch<T, ActiveLevel> {
     type Error = <T as ToggleableOutputPin>::Error;
 
     fn toggle(&mut self) -> Result<(), Self::Error> {
