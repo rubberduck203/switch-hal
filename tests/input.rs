@@ -1,7 +1,7 @@
 extern crate switch_hal;
 
 use switch_hal::mock::{Pin, State};
-use switch_hal::input::{Switch, InputSwitch};
+use switch_hal::{InputSwitch, Switch};
 
 mod active_high_switch {
     use super::*;

@@ -1,10 +1,10 @@
-//! An alternative Pin implementation 
-//! WARNING: Unstable! May be removed if embedded_hal_mock crate is improved.
+//! Mock implementations of [InputPin](embedded_hal::digital::v2::InputPin) and [OutputPin](embedded_hal::digital::v2::OutputPin).
+//! 
+//! WARNING: May be removed if `embedded_hal_mock` crate is improved.  
 //! https://github.com/dbrgn/embedded-hal-mock/issues/30
 //!
- 
-// This is part of the main crate so it is accessible to doctests.
-// Otherwise, I would have created a tests/mock/mod.rs file.
+//! This is part of the main crate so it is accessible to doctests.  
+//! Otherwise, I would have created a tests/mock/mod.rs file.
 use embedded_hal::digital::v2::{InputPin, OutputPin, StatefulOutputPin};
 use embedded_hal::digital::v2::toggleable;
 
