@@ -10,7 +10,8 @@ pub trait OutputSwitch {
     /// 
     /// ```
     /// # use switch_hal::mock;
-    /// use switch_hal::output::{OutputSwitch, Switch, ActiveHigh};
+    /// use switch_hal::ActiveHigh;
+    /// use switch_hal::output::{OutputSwitch, Switch};
     /// # let pin = mock::Pin::new();
     /// let mut led = Switch::<_, ActiveHigh>::new(pin);
     /// led.on().ok();
@@ -23,7 +24,8 @@ pub trait OutputSwitch {
     /// 
     /// ```
     /// # use switch_hal::mock;
-    /// use switch_hal::output::{OutputSwitch, Switch, ActiveHigh};
+    /// use switch_hal::ActiveHigh;
+    /// use switch_hal::output::{OutputSwitch, Switch};
     /// # let pin = mock::Pin::new();
     /// let mut led = Switch::<_, ActiveHigh>::new(pin);
     /// led.off().ok();
@@ -44,7 +46,8 @@ pub trait ToggleableOutputSwitch {
     /// 
     /// ```
     /// # use switch_hal::mock;
-    /// use switch_hal::output::{ToggleableOutputSwitch, OutputSwitch, Switch, ActiveHigh};
+    /// use switch_hal::ActiveHigh;
+    /// use switch_hal::output::{ToggleableOutputSwitch, OutputSwitch, Switch};
     /// # let pin = mock::Pin::new();
     /// let mut led = Switch::<_, ActiveHigh>::new(pin);
     /// led.toggle().ok();
@@ -53,11 +56,7 @@ pub trait ToggleableOutputSwitch {
 }
 
 use core::marker::PhantomData;
-
-/// Zero sized struct for signaling to [Switch](Switch) that it is active high
-pub struct ActiveHigh;
-/// Zero sized struct for signaling to [Switch](Switch) that it is active low
-pub struct ActiveLow;
+use crate::{ActiveHigh, ActiveLow};
 
 /// Concrete implementation of [OutputSwitch](OutputSwitch)
 pub struct Switch<T, ActiveLevel>
@@ -77,7 +76,8 @@ impl<T: OutputPin, ActiveLevel> Switch<T, ActiveLevel> {
     ///
     /// ```
     /// # use switch_hal::mock;
-    /// use switch_hal::output::{OutputSwitch, Switch, ActiveHigh};
+    /// use switch_hal::ActiveHigh;
+    /// use switch_hal::output::{OutputSwitch, Switch};
     /// # let pin = mock::Pin::new();
     /// let mut led = Switch::<_, ActiveHigh>::new(pin);
     /// ```
@@ -86,7 +86,8 @@ impl<T: OutputPin, ActiveLevel> Switch<T, ActiveLevel> {
     ///
     /// ```
     /// # use switch_hal::mock;
-    /// use switch_hal::output::{OutputSwitch, Switch, ActiveLow};
+    /// use switch_hal::ActiveLow;
+    /// use switch_hal::output::{OutputSwitch, Switch};
     /// # let pin = mock::Pin::new();
     /// let mut led = Switch::<_, ActiveLow>::new(pin);
     /// ```
@@ -99,7 +100,8 @@ impl<T: OutputPin, ActiveLevel> Switch<T, ActiveLevel> {
     /// use stm32f3xx_hal::gpio::{PushPull, Output};
     /// use stm32f3xx_hal::stm32;
     /// 
-    /// use switch_hal::output::{Switch, ActiveHigh};
+    /// use switch_hal::ActiveHigh;
+    /// use switch_hal::output::Switch;
     /// 
     /// let device_periphs = stm32::Peripherals::take().unwrap();
     /// let gpioe = device_periphs.GPIOE.split(&mut reset_control_clock.ahb);
@@ -125,7 +127,8 @@ impl<T: OutputPin, ActiveLevel> Switch<T, ActiveLevel> {
     /// 
     /// ```
     /// # use switch_hal::mock;
-    /// use switch_hal::output::{OutputSwitch, Switch, ActiveHigh};
+    /// use switch_hal::ActiveHigh;
+    /// use switch_hal::output::{OutputSwitch, Switch};
     /// # let pin = mock::Pin::new();
     /// let mut led = Switch::<_, ActiveHigh>::new(pin);
     /// led.on().ok();
