@@ -1,6 +1,6 @@
 [package]
 name = "switch-hal"
-version = "0.2.1"
+version = "0.3.0"
 authors = ["Christopher J. McClellan <chris.mcclellan203@gmail.com>"]
 edition = "2018"
 description = "HAL and basic implementations for input and output switches (buttons, switches, leds, transistors)"
