@@ -1,6 +1,5 @@
-
-use embedded_hal::digital::v2::InputPin;
 use crate::{ActiveHigh, ActiveLow, InputSwitch, Switch};
+use embedded_hal::digital::v2::InputPin;
 
 impl<T: InputPin> InputSwitch for Switch<T, ActiveHigh> {
     type Error = <T as InputPin>::Error;

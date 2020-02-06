@@ -4,8 +4,8 @@ use switch_hal::mock;
 
 mod active_high_switch {
     use super::*;
-    use switch_hal::{Switch, ActiveHigh, OutputSwitch};
     use embedded_hal::digital::v2::InputPin;
+    use switch_hal::{ActiveHigh, OutputSwitch, Switch};
 
     #[test]
     fn when_on_pin_is_high() {
@@ -47,8 +47,8 @@ mod active_high_switch {
 
 mod active_low_switch {
     use super::*;
-    use switch_hal::{ActiveLow, Switch, OutputSwitch};
     use embedded_hal::digital::v2::InputPin;
+    use switch_hal::{ActiveLow, OutputSwitch, Switch};
 
     #[test]
     fn when_on_pin_is_low() {

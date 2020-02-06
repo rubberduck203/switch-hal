@@ -1,7 +1,7 @@
 #![no_std]
 
-mod output;
 mod input;
+mod output;
 
 pub mod mock;
 
@@ -11,9 +11,9 @@ pub trait InputSwitch {
 
     /// Returns true if the swich has been activated, otherwise false
     /// i.e. if a button is currently pressed, returns true
-    /// 
+    ///
     /// # Examples
-    /// 
+    ///
     /// ```
     /// # use switch_hal::mock;
     /// use switch_hal::{ActiveLow, InputSwitch, OutputSwitch, Switch};
@@ -34,9 +34,9 @@ pub trait OutputSwitch {
     type Error;
 
     /// Turns the switch on
-    /// 
+    ///
     /// # Examples
-    /// 
+    ///
     /// ```
     /// # use switch_hal::mock;
     /// use switch_hal::{ActiveHigh, OutputSwitch, Switch};
@@ -47,9 +47,9 @@ pub trait OutputSwitch {
     fn on(&mut self) -> Result<(), Self::Error>;
 
     /// Turns the switch off
-    /// 
+    ///
     /// # Examples
-    /// 
+    ///
     /// ```
     /// # use switch_hal::mock;
     /// use switch_hal::{ActiveHigh, OutputSwitch, Switch};
@@ -61,16 +61,16 @@ pub trait OutputSwitch {
 }
 
 /// Toggles the switch from it's current state to it's opposite state.
-/// 
+///
 /// # Notes
 /// This is only available if the underlying hal has implemented [ToggleableOutputPin](embedded_hal::digital::v2::ToggleableOutputPin)
 pub trait ToggleableOutputSwitch {
     type Error;
 
     /// Toggles the current state of the [OutputSwitch](OutputSwitch)
-    /// 
+    ///
     /// # Examples
-    /// 
+    ///
     /// ```
     /// # use switch_hal::mock;
     /// use switch_hal::{ActiveHigh, OutputSwitch, ToggleableOutputSwitch, Switch};
@@ -93,18 +93,17 @@ use core::marker::PhantomData;
 /// # Type Params
 /// - `IoPin` must be a type that implements either of the [InputPin](embedded_hal::digital::v2::InputPin) or [OutputPin](embedded_hal::digital::v2::OutputPin) traits.
 /// - `ActiveLevel` indicates whether the `Switch` is [ActiveHigh](ActiveHigh) or [ActiveLow](ActiveLow).
-///     `ActiveLevel` is not actually stored in the struct. 
+///     `ActiveLevel` is not actually stored in the struct.
 ///     It's [PhantomData](core::marker::PhantomData) used to indicate which implementation to use.
-pub struct Switch<IoPin, ActiveLevel>
-{
+pub struct Switch<IoPin, ActiveLevel> {
     pin: IoPin,
     active: PhantomData<ActiveLevel>,
 }
 
 impl<IoPin, ActiveLevel> Switch<IoPin, ActiveLevel> {
-    /// Constructs a new [Switch](Switch) from a concrete implementation of an 
+    /// Constructs a new [Switch](Switch) from a concrete implementation of an
     /// [InputPin](embedded_hal::digital::v2::InputPin) or [OutputPin](embedded_hal::digital::v2::OutputPin)
-    /// 
+    ///
     /// # Examples
     ///
     /// Active High
@@ -132,12 +131,12 @@ impl<IoPin, ActiveLevel> Switch<IoPin, ActiveLevel> {
     /// use stm32f3xx_hal::gpio::gpioe;
     /// use stm32f3xx_hal::gpio::{PushPull, Output};
     /// use stm32f3xx_hal::stm32;
-    /// 
+    ///
     /// use switch_hal::{ActiveHigh, Switch};
-    /// 
+    ///
     /// let device_periphs = stm32::Peripherals::take().unwrap();
     /// let gpioe = device_periphs.GPIOE.split(&mut reset_control_clock.ahb);
-    /// 
+    ///
     /// let led = Switch::<_, ActiveHigh>::new(
     ///     gpioe
     ///     .pe9
@@ -152,11 +151,11 @@ impl<IoPin, ActiveLevel> Switch<IoPin, ActiveLevel> {
     }
 
     /// Consumes the [Switch](Switch) and returns the underlying [InputPin](embedded_hal::digital::v2::InputPin) or [OutputPin](embedded_hal::digital::v2::OutputPin).
-    /// 
+    ///
     /// This is useful fore retrieving the underlying pin to use it for a different purpose.
-    /// 
+    ///
     /// # Examples
-    /// 
+    ///
     /// ```
     /// # use switch_hal::mock;
     /// use switch_hal::{ActiveHigh, OutputSwitch, Switch};

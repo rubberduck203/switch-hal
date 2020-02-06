@@ -26,7 +26,9 @@ impl<T: OutputPin> OutputSwitch for Switch<T, ActiveLow> {
     }
 }
 
-impl<T: OutputPin + ToggleableOutputPin, ActiveLevel> ToggleableOutputSwitch for Switch<T, ActiveLevel> {
+impl<T: OutputPin + ToggleableOutputPin, ActiveLevel> ToggleableOutputSwitch
+    for Switch<T, ActiveLevel>
+{
     type Error = <T as ToggleableOutputPin>::Error;
 
     fn toggle(&mut self) -> Result<(), Self::Error> {
