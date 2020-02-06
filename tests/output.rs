@@ -4,8 +4,8 @@ use switch_hal::mock;
 
 mod active_high_switch {
     use super::*;
-    use switch_hal::output::{ActiveHigh, Switch, OutputSwitch};
-    use embedded_hal::digital::v2::{InputPin};
+    use embedded_hal::digital::v2::InputPin;
+    use switch_hal::{ActiveHigh, OutputSwitch, Switch};
 
     #[test]
     fn when_on_pin_is_high() {
@@ -31,7 +31,7 @@ mod active_high_switch {
 
     #[test]
     fn is_toggleable() {
-        use switch_hal::output::ToggleableOutputSwitch;
+        use switch_hal::ToggleableOutputSwitch;
 
         let pin = mock::Pin::new();
 
@@ -47,8 +47,8 @@ mod active_high_switch {
 
 mod active_low_switch {
     use super::*;
-    use switch_hal::output::{ActiveLow, Switch, OutputSwitch};
     use embedded_hal::digital::v2::InputPin;
+    use switch_hal::{ActiveLow, OutputSwitch, Switch};
 
     #[test]
     fn when_on_pin_is_low() {
@@ -74,7 +74,7 @@ mod active_low_switch {
 
     #[test]
     fn is_toggleable() {
-        use switch_hal::output::ToggleableOutputSwitch;
+        use switch_hal::ToggleableOutputSwitch;
 
         let pin = mock::Pin::new();
 

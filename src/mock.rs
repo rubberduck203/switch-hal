@@ -1,12 +1,12 @@
-//! An alternative Pin implementation 
-//! WARNING: Unstable! May be removed if embedded_hal_mock crate is improved.
+//! Mock implementations of [InputPin](embedded_hal::digital::v2::InputPin) and [OutputPin](embedded_hal::digital::v2::OutputPin).
+//!
+//! WARNING: May be removed if `embedded_hal_mock` crate is improved.
 //! https://github.com/dbrgn/embedded-hal-mock/issues/30
 //!
- 
-// This is part of the main crate so it is accessible to doctests.
-// Otherwise, I would have created a tests/mock/mod.rs file.
-use embedded_hal::digital::v2::{InputPin, OutputPin, StatefulOutputPin};
+//! This is part of the main crate so it is accessible to doctests.
+//! Otherwise, I would have created a tests/mock/mod.rs file.
 use embedded_hal::digital::v2::toggleable;
+use embedded_hal::digital::v2::{InputPin, OutputPin, StatefulOutputPin};
 
 #[derive(PartialEq, Eq, Debug)]
 pub enum State {
@@ -15,7 +15,7 @@ pub enum State {
 }
 
 pub struct Pin {
-    state: Option<State>
+    state: Option<State>,
 }
 
 impl Pin {
@@ -56,7 +56,7 @@ impl OutputPin for Pin {
         self.state = Some(State::Low);
         Ok(())
     }
-    
+
     fn set_high(&mut self) -> Result<(), Self::Error> {
         self.state = Some(State::High);
         Ok(())
