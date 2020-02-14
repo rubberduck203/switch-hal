@@ -170,40 +170,28 @@ impl<IoPin, ActiveLevel> Switch<IoPin, ActiveLevel> {
     }
 }
 
-use embedded_hal::digital::v2::{InputPin, OutputPin};
+pub trait IntoSwitch {
+    fn into_switch<ActiveLevel>(self) -> Switch<Self, ActiveLevel>
+    where
+        Self: core::marker::Sized;
 
-pub trait OutputPinExt {
-    fn into_active_high_output(self) -> Switch<Self, ActiveHigh>
-        where Self: core::marker::Sized + OutputPin;
-
-    fn into_active_low_output(self) -> Switch<Self, ActiveLow>
-        where Self: core::marker::Sized + OutputPin;
-}
-
-pub trait InputPinExt {
-    fn into_active_high_input(self) -> Switch<Self, ActiveHigh>
-        where Self: core::marker::Sized + InputPin;
-
-    fn into_active_low_input(self) -> Switch<Self, ActiveLow>
-        where Self: core::marker::Sized + InputPin;
-}
-
-impl<T: OutputPin> OutputPinExt for T {
-    fn into_active_high_output(self) -> Switch<Self, ActiveHigh> {
-        Switch::<Self, ActiveHigh>::new(self)
+    fn into_active_low_switch(self) -> Switch<Self, ActiveLow>
+    where
+        Self: core::marker::Sized,
+    {
+        self.into_switch::<ActiveLow>()
     }
 
-    fn into_active_low_output(self) -> Switch<Self, ActiveLow> {
-        Switch::<Self, ActiveLow>::new(self)
+    fn into_active_high_switch(self) -> Switch<Self, ActiveHigh>
+    where
+        Self: core::marker::Sized,
+    {
+        self.into_switch::<ActiveHigh>()
     }
 }
 
-impl<T: InputPin> InputPinExt for T {
-    fn into_active_high_input(self) -> Switch<Self, ActiveHigh> {
-        Switch::<Self, ActiveHigh>::new(self)
-    }
-
-    fn into_active_low_input(self) -> Switch<Self, ActiveLow> {
-        Switch::<Self, ActiveLow>::new(self)
+impl<T> IntoSwitch for T {
+    fn into_switch<ActiveLevel>(self) -> Switch<Self, ActiveLevel> {
+        Switch::<Self, ActiveLevel>::new(self)
     }
 }
