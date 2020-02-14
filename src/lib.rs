@@ -16,10 +16,10 @@ pub trait InputSwitch {
     ///
     /// ```
     /// # use switch_hal::mock;
-    /// use switch_hal::{ActiveLow, InputSwitch, OutputSwitch, Switch};
+    /// use switch_hal::{InputSwitch, OutputSwitch, Switch, IntoSwitch};
     /// # let pin = mock::Pin::with_state(mock::State::High);
-    /// # let mut status_led = Switch::<_, ActiveLow>::new(mock::Pin::new());
-    /// let button = Switch::<_, ActiveLow>::new(pin);
+    /// # let mut status_led = mock::Pin::new().into_active_high_switch();
+    /// let button = pin.into_active_low_switch();
     /// match button.is_active() {
     ///     Ok(true) => { status_led.on().ok(); }
     ///     Ok(false) => { status_led.off().ok(); }
@@ -39,9 +39,9 @@ pub trait OutputSwitch {
     ///
     /// ```
     /// # use switch_hal::mock;
-    /// use switch_hal::{ActiveHigh, OutputSwitch, Switch};
+    /// use switch_hal::{OutputSwitch, Switch, IntoSwitch};
     /// # let pin = mock::Pin::new();
-    /// let mut led = Switch::<_, ActiveHigh>::new(pin);
+    /// let mut led = pin.into_active_high_switch();
     /// led.on().ok();
     /// ```
     fn on(&mut self) -> Result<(), Self::Error>;
@@ -52,9 +52,9 @@ pub trait OutputSwitch {
     ///
     /// ```
     /// # use switch_hal::mock;
-    /// use switch_hal::{ActiveHigh, OutputSwitch, Switch};
+    /// use switch_hal::{OutputSwitch, Switch, IntoSwitch};
     /// # let pin = mock::Pin::new();
-    /// let mut led = Switch::<_, ActiveHigh>::new(pin);
+    /// let mut led = pin.into_active_high_switch();
     /// led.off().ok();
     /// ```
     fn off(&mut self) -> Result<(), Self::Error>;
@@ -73,9 +73,9 @@ pub trait ToggleableOutputSwitch {
     ///
     /// ```
     /// # use switch_hal::mock;
-    /// use switch_hal::{ActiveHigh, OutputSwitch, ToggleableOutputSwitch, Switch};
+    /// use switch_hal::{OutputSwitch, ToggleableOutputSwitch, Switch, IntoSwitch};
     /// # let pin = mock::Pin::new();
-    /// let mut led = Switch::<_, ActiveHigh>::new(pin);
+    /// let mut led = pin.into_active_high_switch();
     /// led.toggle().ok();
     /// ```
     fn toggle(&mut self) -> Result<(), Self::Error>;
@@ -158,9 +158,9 @@ impl<IoPin, ActiveLevel> Switch<IoPin, ActiveLevel> {
     ///
     /// ```
     /// # use switch_hal::mock;
-    /// use switch_hal::{ActiveHigh, OutputSwitch, Switch};
+    /// use switch_hal::{OutputSwitch, Switch, IntoSwitch};
     /// # let pin = mock::Pin::new();
-    /// let mut led = Switch::<_, ActiveHigh>::new(pin);
+    /// let mut led = pin.into_active_high_switch();
     /// led.on().ok();
     /// let mut pin = led.into_pin();
     /// // do something else with the pin
