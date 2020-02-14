@@ -101,8 +101,10 @@ pub struct Switch<IoPin, ActiveLevel> {
 }
 
 impl<IoPin, ActiveLevel> Switch<IoPin, ActiveLevel> {
-    /// Constructs a new [Switch](Switch) from a concrete implementation of an
+    /// Constructs a new [Switch](struct.Switch.html) from a concrete implementation of an
     /// [InputPin](embedded_hal::digital::v2::InputPin) or [OutputPin](embedded_hal::digital::v2::OutputPin)
+    ///
+    /// **Prefer the [IntoSwitch](trait.IntoSwitch.html) trait over calling [new](#method.new) directly.**
     ///
     /// # Examples
     ///
@@ -150,7 +152,7 @@ impl<IoPin, ActiveLevel> Switch<IoPin, ActiveLevel> {
         }
     }
 
-    /// Consumes the [Switch](Switch) and returns the underlying [InputPin](embedded_hal::digital::v2::InputPin) or [OutputPin](embedded_hal::digital::v2::OutputPin).
+    /// Consumes the [Switch](struct.Switch.html) and returns the underlying [InputPin](embedded_hal::digital::v2::InputPin) or [OutputPin](embedded_hal::digital::v2::OutputPin).
     ///
     /// This is useful fore retrieving the underlying pin to use it for a different purpose.
     ///
