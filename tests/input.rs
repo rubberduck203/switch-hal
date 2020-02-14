@@ -45,19 +45,19 @@ mod active_low_switch {
         use super::*;
 
         #[test]
-        fn true_when_pin_high() {
+        fn false_when_pin_high() {
             let pin = Pin::with_state(State::High);
 
             let button = Switch::<_, ActiveLow>::new(pin);
-            assert_eq!(true, button.is_active().unwrap());
+            assert_eq!(false, button.is_active().unwrap());
         }
 
         #[test]
-        fn false_when_pin_low() {
+        fn  true_when_pin_low() {
             let pin = Pin::with_state(State::Low);
 
             let button = Switch::<_, ActiveLow>::new(pin);
-            assert_eq!(false, button.is_active().unwrap());
+            assert_eq!(true, button.is_active().unwrap());
         }
 
         #[test]
