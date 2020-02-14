@@ -1,0 +1,84 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in library 'switch-hal'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--lib",
+                    "--package=switch-hal"
+                ],
+                "filter": {
+                    "name": "switch-hal",
+                    "kind": "lib"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug integration test 'pin_into_switch'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--test=pin_into_switch",
+                    "--package=switch-hal"
+                ],
+                "filter": {
+                    "name": "pin_into_switch",
+                    "kind": "test"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug integration test 'output'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--test=output",
+                    "--package=switch-hal"
+                ],
+                "filter": {
+                    "name": "output",
+                    "kind": "test"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug integration test 'input'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--test=input",
+                    "--package=switch-hal"
+                ],
+                "filter": {
+                    "name": "input",
+                    "kind": "test"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
