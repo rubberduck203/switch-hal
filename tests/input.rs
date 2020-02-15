@@ -53,7 +53,7 @@ mod active_low_switch {
         }
 
         #[test]
-        fn  true_when_pin_low() {
+        fn true_when_pin_low() {
             let pin = Pin::with_state(State::Low);
 
             let button = Switch::<_, ActiveLow>::new(pin);

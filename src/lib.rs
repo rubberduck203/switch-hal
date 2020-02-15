@@ -16,10 +16,10 @@ pub trait InputSwitch {
     ///
     /// ```
     /// # use switch_hal::mock;
-    /// use switch_hal::{ActiveLow, InputSwitch, OutputSwitch, Switch};
+    /// use switch_hal::{InputSwitch, OutputSwitch, Switch, IntoSwitch};
     /// # let pin = mock::Pin::with_state(mock::State::High);
-    /// # let mut status_led = Switch::<_, ActiveLow>::new(mock::Pin::new());
-    /// let button = Switch::<_, ActiveLow>::new(pin);
+    /// # let mut status_led = mock::Pin::new().into_active_high_switch();
+    /// let button = pin.into_active_low_switch();
     /// match button.is_active() {
     ///     Ok(true) => { status_led.on().ok(); }
     ///     Ok(false) => { status_led.off().ok(); }
@@ -39,9 +39,9 @@ pub trait OutputSwitch {
     ///
     /// ```
     /// # use switch_hal::mock;
-    /// use switch_hal::{ActiveHigh, OutputSwitch, Switch};
+    /// use switch_hal::{OutputSwitch, Switch, IntoSwitch};
     /// # let pin = mock::Pin::new();
-    /// let mut led = Switch::<_, ActiveHigh>::new(pin);
+    /// let mut led = pin.into_active_high_switch();
     /// led.on().ok();
     /// ```
     fn on(&mut self) -> Result<(), Self::Error>;
@@ -52,9 +52,9 @@ pub trait OutputSwitch {
     ///
     /// ```
     /// # use switch_hal::mock;
-    /// use switch_hal::{ActiveHigh, OutputSwitch, Switch};
+    /// use switch_hal::{OutputSwitch, Switch, IntoSwitch};
     /// # let pin = mock::Pin::new();
-    /// let mut led = Switch::<_, ActiveHigh>::new(pin);
+    /// let mut led = pin.into_active_high_switch();
     /// led.off().ok();
     /// ```
     fn off(&mut self) -> Result<(), Self::Error>;
@@ -73,9 +73,9 @@ pub trait ToggleableOutputSwitch {
     ///
     /// ```
     /// # use switch_hal::mock;
-    /// use switch_hal::{ActiveHigh, OutputSwitch, ToggleableOutputSwitch, Switch};
+    /// use switch_hal::{OutputSwitch, ToggleableOutputSwitch, Switch, IntoSwitch};
     /// # let pin = mock::Pin::new();
-    /// let mut led = Switch::<_, ActiveHigh>::new(pin);
+    /// let mut led = pin.into_active_high_switch();
     /// led.toggle().ok();
     /// ```
     fn toggle(&mut self) -> Result<(), Self::Error>;
@@ -101,8 +101,10 @@ pub struct Switch<IoPin, ActiveLevel> {
 }
 
 impl<IoPin, ActiveLevel> Switch<IoPin, ActiveLevel> {
-    /// Constructs a new [Switch](Switch) from a concrete implementation of an
+    /// Constructs a new [Switch](struct.Switch.html) from a concrete implementation of an
     /// [InputPin](embedded_hal::digital::v2::InputPin) or [OutputPin](embedded_hal::digital::v2::OutputPin)
+    ///
+    /// **Prefer the [IntoSwitch](trait.IntoSwitch.html) trait over calling [new](#method.new) directly.**
     ///
     /// # Examples
     ///
@@ -150,7 +152,7 @@ impl<IoPin, ActiveLevel> Switch<IoPin, ActiveLevel> {
         }
     }
 
-    /// Consumes the [Switch](Switch) and returns the underlying [InputPin](embedded_hal::digital::v2::InputPin) or [OutputPin](embedded_hal::digital::v2::OutputPin).
+    /// Consumes the [Switch](struct.Switch.html) and returns the underlying [InputPin](embedded_hal::digital::v2::InputPin) or [OutputPin](embedded_hal::digital::v2::OutputPin).
     ///
     /// This is useful fore retrieving the underlying pin to use it for a different purpose.
     ///
@@ -158,9 +160,9 @@ impl<IoPin, ActiveLevel> Switch<IoPin, ActiveLevel> {
     ///
     /// ```
     /// # use switch_hal::mock;
-    /// use switch_hal::{ActiveHigh, OutputSwitch, Switch};
+    /// use switch_hal::{OutputSwitch, Switch, IntoSwitch};
     /// # let pin = mock::Pin::new();
-    /// let mut led = Switch::<_, ActiveHigh>::new(pin);
+    /// let mut led = pin.into_active_high_switch();
     /// led.on().ok();
     /// let mut pin = led.into_pin();
     /// // do something else with the pin
@@ -170,40 +172,80 @@ impl<IoPin, ActiveLevel> Switch<IoPin, ActiveLevel> {
     }
 }
 
-use embedded_hal::digital::v2::{InputPin, OutputPin};
+/// Convenience functions for converting [InputPin](embedded_hal::digital::v2::InputPin)
+/// and [OutputPin](embedded_hal::digital::v2::OutputPin) to a [Switch](struct.Switch.html).
+///
+/// The type of [Switch](struct.Switch.html) returned,
+/// [InputSwitch](trait.InputSwitch.html) or [OutputSwitch](trait.OutputSwitch.html) is
+/// determined by whether the `IoPin` being consumed is an [InputPin](embedded_hal::digital::v2::InputPin)
+/// or [OutputPin](embedded_hal::digital::v2::OutputPin).
+pub trait IntoSwitch {
 
-pub trait OutputPinExt {
-    fn into_active_high_output(self) -> Switch<Self, ActiveHigh>
-        where Self: core::marker::Sized + OutputPin;
+    /// Consumes the `IoPin` returning a [Switch](struct.Switch.html) of the appropriate `ActiveLevel`.
+    ///
+    /// This method exists so other, more convenient functions, can have blanket implementations.  
+    /// Prefer [into_active_low_switch](#method.into_active_low_switch) and [into_active_high_switch](#method.into_active_high_switch).
+    ///
+    /// # Examples
+    ///
+    /// ## Active High
+    ///
+    /// ```
+    /// # use switch_hal::mock;
+    /// use switch_hal::{ActiveHigh, OutputSwitch, IntoSwitch};
+    /// # let pin = mock::Pin::new();
+    /// let led = pin.into_switch::<ActiveHigh>();
+    /// ```
+    ///
+    /// ## Active Low
+    ///
+    /// ```
+    /// # use switch_hal::mock;
+    /// use switch_hal::{ActiveLow, InputSwitch, IntoSwitch};
+    /// # let pin = mock::Pin::new();
+    /// let button = pin.into_switch::<ActiveLow>();
+    /// ```
+    fn into_switch<ActiveLevel>(self) -> Switch<Self, ActiveLevel>
+    where
+        Self: core::marker::Sized;
 
-    fn into_active_low_output(self) -> Switch<Self, ActiveLow>
-        where Self: core::marker::Sized + OutputPin;
-}
-
-pub trait InputPinExt {
-    fn into_active_high_input(self) -> Switch<Self, ActiveHigh>
-        where Self: core::marker::Sized + InputPin;
-
-    fn into_active_low_input(self) -> Switch<Self, ActiveLow>
-        where Self: core::marker::Sized + InputPin;
-}
-
-impl<T: OutputPin> OutputPinExt for T {
-    fn into_active_high_output(self) -> Switch<Self, ActiveHigh> {
-        Switch::<Self, ActiveHigh>::new(self)
+    /// Consumes the `IoPin` returning a `Switch<IoPin, ActiveLow>`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use switch_hal::mock;
+    /// use switch_hal::IntoSwitch;
+    /// # let pin = mock::Pin::new();
+    /// let led = pin.into_active_low_switch();
+    /// ```
+    fn into_active_low_switch(self) -> Switch<Self, ActiveLow>
+    where
+        Self: core::marker::Sized,
+    {
+        self.into_switch::<ActiveLow>()
     }
 
-    fn into_active_low_output(self) -> Switch<Self, ActiveLow> {
-        Switch::<Self, ActiveLow>::new(self)
+    /// Consumes the `IoPin` returning a `Switch<IoPin, ActiveHigh>`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use switch_hal::mock;
+    /// use switch_hal::IntoSwitch;
+    /// # let pin = mock::Pin::new();
+    /// let button = pin.into_active_high_switch();
+    /// ```
+    fn into_active_high_switch(self) -> Switch<Self, ActiveHigh>
+    where
+        Self: core::marker::Sized,
+    {
+        self.into_switch::<ActiveHigh>()
     }
 }
 
-impl<T: InputPin> InputPinExt for T {
-    fn into_active_high_input(self) -> Switch<Self, ActiveHigh> {
-        Switch::<Self, ActiveHigh>::new(self)
-    }
-
-    fn into_active_low_input(self) -> Switch<Self, ActiveLow> {
-        Switch::<Self, ActiveLow>::new(self)
+impl<T> IntoSwitch for T {
+    fn into_switch<ActiveLevel>(self) -> Switch<Self, ActiveLevel> {
+        Switch::<Self, ActiveLevel>::new(self)
     }
 }
