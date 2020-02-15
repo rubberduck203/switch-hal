@@ -53,3 +53,13 @@ at your option.
 ## Architectural Decision Records
 
 Major design decisions are tracked in the [adr](./adr) directory.
+
+## Changelog
+
+### 0.3.2
+
+- Add convenience converter functions `into_active_low_switch()` and `into_active_high_switch()`
+
+### 0.3.1
+
+- Bug Fix: `is_active()` was returning the wrong result for `Switch<InputPin, ActiveLow>`
