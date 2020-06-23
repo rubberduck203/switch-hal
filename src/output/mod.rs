@@ -1,6 +1,6 @@
-use embedded_hal::digital::v2::{OutputPin, ToggleableOutputPin};
+use embedded_hal::digital::v2::{OutputPin, StatefulOutputPin, ToggleableOutputPin};
 
-use crate::{ActiveHigh, ActiveLow, OutputSwitch, Switch, ToggleableOutputSwitch};
+use crate::{ActiveHigh, ActiveLow, OutputSwitch, Switch, StatefulOutputSwitch, ToggleableOutputSwitch};
 
 impl<T: OutputPin> OutputSwitch for Switch<T, ActiveHigh> {
     type Error = <T as OutputPin>::Error;
@@ -33,5 +33,33 @@ impl<T: OutputPin + ToggleableOutputPin, ActiveLevel> ToggleableOutputSwitch
 
     fn toggle(&mut self) -> Result<(), Self::Error> {
         self.pin.toggle()
+    }
+}
+
+impl<T: OutputPin + StatefulOutputPin> StatefulOutputSwitch
+    for Switch<T, ActiveLow>
+{
+    type Error = <T as OutputPin>::Error;
+
+    fn is_on(&mut self) -> Result<bool, Self::Error> {
+        self.pin.is_set_low()
+    }
+
+    fn is_off(&mut self) -> Result<bool, Self::Error> {
+        self.pin.is_set_high()
+    }
+}
+
+impl<T: OutputPin + StatefulOutputPin> StatefulOutputSwitch
+    for Switch<T, ActiveHigh>
+{
+    type Error = <T as OutputPin>::Error;
+
+    fn is_on(&mut self) -> Result<bool, Self::Error> {
+        self.pin.is_set_high()
+    }
+
+    fn is_off(&mut self) -> Result<bool, Self::Error> {
+        self.pin.is_set_low()
     }
 }
