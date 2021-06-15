@@ -56,6 +56,10 @@ Major design decisions are tracked in the [adr](./adr) directory.
 
 ## Changelog
 
+### 0.4.0
+
+Adds `StatefulOutputSwitch` thanks to [forkbomb9](https://github.com/forkbomb9)
+
 ### 0.3.3
 
 Update embedded-hal to 0.2.5
