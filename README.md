@@ -56,6 +56,10 @@ Major design decisions are tracked in the [adr](./adr) directory.
 
 ## Changelog
 
+### 0.3.3
+
+Update embedded-hal to 0.2.5
+
 ### 0.3.2
 
 - Add convenience converter functions `into_active_low_switch()` and `into_active_high_switch()`
