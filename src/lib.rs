@@ -81,6 +81,42 @@ pub trait ToggleableOutputSwitch {
     fn toggle(&mut self) -> Result<(), Self::Error>;
 }
 
+/// Checks current switch state
+///
+/// # Notes
+/// This is only available if the underlying hal has implemented [StatefulOutputPin](embedded_hal::digital::v2::StatefulOutputPin)
+pub trait StatefulOutputSwitch {
+    type Error;
+
+    /// Checks whether the switch is on
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use switch_hal::mock;
+    /// use switch_hal::{OutputSwitch, Switch, StatefulOutputSwitch, IntoSwitch};
+    /// # let pin = mock::Pin::new();
+    /// let mut led = pin.into_active_high_switch();
+    /// led.off().ok();
+    /// assert!(!led.is_on().unwrap());
+    /// ```
+    fn is_on(&mut self) -> Result<bool, Self::Error>;
+
+    /// Checks whether the switch is off
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use switch_hal::mock;
+    /// use switch_hal::{OutputSwitch, Switch, StatefulOutputSwitch, IntoSwitch};
+    /// # let pin = mock::Pin::new();
+    /// let mut led = pin.into_active_high_switch();
+    /// led.off().ok();
+    /// assert!(led.is_off().unwrap());
+    /// ```
+    fn is_off(&mut self) -> Result<bool, Self::Error>;
+}
+
 /// Zero sized struct for signaling to [Switch](struct.Switch.html) that it is active high
 pub struct ActiveHigh;
 /// Zero sized struct for signaling to [Switch](struct.Switch.html) that it is active low
