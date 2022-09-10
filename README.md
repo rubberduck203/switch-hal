@@ -26,7 +26,7 @@ Using the raw GPIO to set pins high and low will have you making changes all ove
 Wouldn't it be nicer if you only had to think about that once, when you initialize your application,  
 and from then on out, simply called `led.on()` or `led.off()`.  
 Having an abstraction at the proper level reduces cognitive load.  
-Specifying whether a simple peripheral is active high or low in a single place in your application reduces the maintenace burden.
+Specifying whether a simple peripheral is active high or low in a single place in your application reduces the maintenance burden.
 
 ## Documentation
 
