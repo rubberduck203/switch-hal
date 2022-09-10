@@ -83,10 +83,10 @@ mod test {
         use super::*;
 
         #[test]
-        fn state_is_unitialized() {
+        fn state_is_uninitialized() {
             let pin = Pin::new();
             assert_eq!(None, pin.state);
-            pin.is_low().expect_err("Expected unitialized pin");
+            pin.is_low().expect_err("Expected uninitialized pin");
         }
     }
 
@@ -96,7 +96,7 @@ mod test {
         #[test]
         fn error_when_uninitialized() {
             let pin = Pin { state: None };
-            pin.is_high().expect_err("Expected unitialized pin");
+            pin.is_high().expect_err("Expected uninitialized pin");
         }
 
         mod is_high {
@@ -152,13 +152,13 @@ mod test {
         }
     }
 
-    mod statful_output_pin {
+    mod stateful_output_pin {
         use super::*;
 
         #[test]
         fn error_when_uninitialized() {
             let pin = Pin { state: None };
-            pin.is_set_high().expect_err("Expected unitialized pin");
+            pin.is_set_high().expect_err("Expected uninitialized pin");
         }
 
         mod is_set_low {
