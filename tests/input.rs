@@ -28,10 +28,10 @@ mod active_high_switch {
         }
 
         #[test]
-        fn propogates_errors_from_pin() {
+        fn propagates_errors_from_pin() {
             let pin = Pin::new();
             let button = Switch::<_, ActiveHigh>::new(pin);
-            button.is_active().expect_err("Expected unitialized error");
+            button.is_active().expect_err("Expected uninitialized error");
         }
     }
 }
@@ -61,10 +61,10 @@ mod active_low_switch {
         }
 
         #[test]
-        fn propogates_errors_from_pin() {
+        fn propagates_errors_from_pin() {
             let pin = Pin::new();
             let button = Switch::<_, ActiveLow>::new(pin);
-            button.is_active().expect_err("Expected unitialized error");
+            button.is_active().expect_err("Expected uninitialized error");
         }
     }
 }

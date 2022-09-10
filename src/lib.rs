@@ -9,7 +9,7 @@ pub mod mock;
 pub trait InputSwitch {
     type Error;
 
-    /// Returns true if the swich has been activated, otherwise false
+    /// Returns true if the switch has been activated, otherwise false
     /// i.e. if a button is currently pressed, returns true
     ///
     /// # Examples
@@ -29,7 +29,7 @@ pub trait InputSwitch {
     fn is_active(&self) -> Result<bool, Self::Error>;
 }
 
-/// Represents an output switch, such as a LED "switch" or transitor
+/// Represents an output switch, such as a LED "switch" or transistor
 pub trait OutputSwitch {
     type Error;
 
