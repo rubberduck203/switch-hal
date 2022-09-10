@@ -219,7 +219,7 @@ pub trait IntoSwitch {
 
     /// Consumes the `IoPin` returning a [Switch](struct.Switch.html) of the appropriate `ActiveLevel`.
     ///
-    /// This method exists so other, more convenient functions, can have blanket implementations.
+    /// This method exists so other, more convenient functions, can have blanket implementations.  
     /// Prefer [into_active_low_switch](#method.into_active_low_switch) and [into_active_high_switch](#method.into_active_high_switch).
     ///
     /// # Examples

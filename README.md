@@ -13,20 +13,20 @@ It provides a simple, zero-cost, abstraction to clarify the _intent_ of your app
 
 ## Why Switch-HAL? Why not just use raw GPIO?
 
-Did you mean to drive that line high?
-Or did you mean to _turn that LED off_?
-Wait a second... is that LED active _high_?
-Where's the schematic?
+Did you mean to drive that line high?  
+Or did you mean to _turn that LED off_?  
+Wait a second... is that LED active _high_?  
+Where's the schematic?  
 Okay... cathode is wired to the input line... that means it's active low.
 
-Now repeat this every place in your code where you need to turn that LED on or off.
-What happens when the hardware changes?
+Now repeat this every place in your code where you need to turn that LED on or off.  
+What happens when the hardware changes?  
 Using the raw GPIO to set pins high and low will have you making changes all over your code base.
 
-Wouldn't it be nicer if you only had to think about that once, when you initialize your application,
-and from then on out, simply called `led.on()` or `led.off()`.
-Having an abstraction at the proper level reduces cognitive load.
-Specifying whether a simple peripheral is active high or low in a single place in your application reduces the maintenance burden.
+Wouldn't it be nicer if you only had to think about that once, when you initialize your application,  
+and from then on out, simply called `led.on()` or `led.off()`.  
+Having an abstraction at the proper level reduces cognitive load.  
+Specifying whether a simple peripheral is active high or low in a single place in your application reduces the maintenace burden.
 
 ## Documentation
 
